@@ -41,8 +41,8 @@ A beautiful, responsive ToDo List application built with modern web technologies
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/todo-list.git
-   cd todo-list
+   git clone git@github.com:tyagigolu02/ToDo-List.git
+   cd ToDo-List
    ```
 
 2. **Open the application:**
@@ -140,9 +140,9 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## 👨‍💻 Author
 
-**Your Name**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- Email: your.email@example.com
+**Tyagi Golu**
+- GitHub: [@tyagigolu02](https://github.com/tyagigolu02)
+- Project: [ToDo-List](https://github.com/tyagigolu02/ToDo-List)
 
 ## 🙏 Acknowledgments
 
