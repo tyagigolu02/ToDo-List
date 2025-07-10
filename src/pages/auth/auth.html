@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign In - ToDo List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="../../assets/css/styles.css" />
+    <link rel="stylesheet" href="../../assets/css/auth.css" />
+</head>
+<body>
+    <div class="container-fluid">
+        <header class="header">
+            <div class="floating-shapes">
+                <div class="shape circle"></div>
+                <div class="shape triangle"></div>
+                <div class="shape square"></div>
+                <div class="shape circle"></div>
+                <div class="shape triangle"></div>
+            </div>
+            <div class="floating-particles">
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+            </div>
+            <div class="gradient-orbs">
+                <div class="orb orb-1"></div>
+                <div class="orb orb-2"></div>
+            </div>
+            <div class="container">
+                <h1 class="app-title mb-0"><i class="fas fa-user-circle me-3"></i>Account Access</h1>
+            </div>
+        </header>
+        <main class="main-content">
+            <div class="floating-shapes">
+                <div class="shape circle"></div>
+                <div class="shape triangle"></div>
+                <div class="shape square"></div>
+                <div class="shape circle"></div>
+                <div class="shape triangle"></div>
+            </div>
+            <div class="floating-particles">
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+            </div>
+            <div class="gradient-orbs">
+                <div class="orb orb-1"></div>
+                <div class="orb orb-2"></div>
+            </div>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-6">
+                        <div class="card border-0">
+                            <div class="card-body p-5">
+                                <!-- Toggle Buttons -->
+                                <div class="auth-toggle-container mb-4">
+                                    <div class="btn-group w-100" role="group">
+                                        <button type="button" id="loginToggle" class="btn btn-outline-primary auth-toggle-btn active">
+                                            <i class="fas fa-sign-in-alt me-2"></i>Login
+                                        </button>
+                                        <button type="button" id="signupToggle" class="btn btn-outline-primary auth-toggle-btn">
+                                            <i class="fas fa-user-plus me-2"></i>Sign Up
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- Login Form -->
+                                <form id="loginForm" class="form-container">
+                                    <h5 class="card-title text-center mb-4">Welcome Back!</h5>
+                                    <div class="mb-3">
+                                        <label for="loginUsername" class="form-label">Username</label>
+                                        <input type="text" id="loginUsername" class="form-control" required />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="loginPassword" class="form-label">Password</label>
+                                        <input type="password" id="loginPassword" class="form-control" required />
+                                    </div>
+                                    <div id="loginErrorMessage" class="text-danger mb-3 d-none"></div>
+                                    <button type="submit" class="btn btn-primary btn-lg w-100 auth-btn">
+                                        <i class="fas fa-sign-in-alt me-2"></i>Login
+                                    </button>
+                                    
+                                    <div class="text-center mt-5">
+                                        <small class="text-muted">
+                                            <i class="fas fa-info-circle me-1"></i>
+                                            Login with your registered credentials to access your dashboard
+                                        </small>
+                                    </div>
+                                </form>
+
+                                <!-- Signup Form -->
+                                <form id="signupForm" class="form-container">
+                                    <h5 class="card-title text-center mb-4">Create Your Account</h5>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="firstName" class="form-label">First Name</label>
+                                            <input type="text" id="firstName" class="form-control" required />
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="lastName" class="form-label">Last Name</label>
+                                            <input type="text" id="lastName" class="form-control" required />
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="signupUsername" class="form-label">Username</label>
+                                        <input type="text" id="signupUsername" class="form-control" required />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="signupPassword" class="form-label">Password</label>
+                                        <input type="password" id="signupPassword" class="form-control" required />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="confirmPassword" class="form-label">Confirm Password</label>
+                                        <input type="password" id="confirmPassword" class="form-control" required />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="userCategory" class="form-label">Category</label>
+                                        <select id="userCategory" class="form-select" required>
+                                            <option value="">Choose your category...</option>
+                                            <option value="employee">👤 Employee</option>
+                                            <option value="manager">👔 Manager</option>
+                                            <option value="owner">👑 Owner</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3" id="userRoleContainer" style="display: none;">
+                                        <label for="userRole" class="form-label">Specific Role</label>
+                                        <select id="userRole" class="form-select" required>
+                                            <option value="">Choose your role...</option>
+                                        </select>
+                                    </div>
+                                    <div id="signupErrorMessage" class="text-danger mb-3 d-none"></div>
+                                    <button type="submit" class="btn btn-success btn-lg w-100 mb-3 auth-btn">
+                                        <i class="fas fa-user-plus me-2"></i>Create Account
+                                    </button>
+                                    <div class="text-center mt-3">
+                                        <small class="text-muted">
+                                            <i class="fas fa-info-circle me-1"></i>
+                                            Choose your role carefully - it determines your access level
+                                        </small>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/js/main.js"></script>
+    <script src="../../assets/js/auth.js"></script>
+    <script>
+        // Hierarchical role selection functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const userCategory = document.getElementById('userCategory');
+            const userRoleContainer = document.getElementById('userRoleContainer');
+            const userRole = document.getElementById('userRole');
+            
+            const employeeRoles = [
+                { value: 'frontend-developer', text: '💻 Frontend Developer' },
+                { value: 'backend-developer', text: '⚙️ Backend Developer' },
+                { value: 'fullstack-developer', text: '🔧 Full Stack Developer' },
+                { value: 'ui-ux-designer', text: '🎨 UI/UX Designer' },
+                { value: 'qa-tester', text: '🧪 QA Tester' },
+                { value: 'devops-engineer', text: '🚀 DevOps Engineer' },
+                { value: 'data-analyst', text: '📊 Data Analyst' }
+            ];
+            
+            const managerRoles = [
+                { value: 'project-manager', text: '📋 Project Manager' },
+                { value: 'product-manager', text: '🎯 Product Manager' },
+                { value: 'technical-lead', text: '👨‍💻 Technical Lead' },
+                { value: 'scrum-master', text: '🏃‍♂️ Scrum Master' },
+                { value: 'product-owner', text: '👑 Product Owner' },
+                { value: 'team-lead', text: '👥 Team Lead' },
+                { value: 'engineering-manager', text: '📈 Engineering Manager' },
+                { value: 'client-relations-manager', text: '🤝 Client Relations Manager' }
+            ];
+            
+           /* const ownerRoles = [
+                { value: 'company-owner', text: '🏢 Company Owner' },
+                { value: 'founder', text: '🚀 Founder' },
+                { value: 'ceo', text: '👔 CEO' },
+                { value: 'president', text: '🎖️ President' },
+                { value: 'managing-director', text: '📊 Managing Director' }
+            ];*/
+            
+            userCategory.addEventListener('change', function() {
+                const selectedCategory = this.value;
+                
+                // Clear existing role options
+                userRole.innerHTML = '<option value="">Choose your role...</option>';
+                
+                if (selectedCategory === 'employee') {
+                    userRoleContainer.style.display = 'block';
+                    employeeRoles.forEach(role => {
+                        const option = document.createElement('option');
+                        option.value = role.value;
+                        option.textContent = role.text;
+                        userRole.appendChild(option);
+                    });
+                } else if (selectedCategory === 'manager') {
+                    userRoleContainer.style.display = 'block';
+                    managerRoles.forEach(role => {
+                        const option = document.createElement('option');
+                        option.value = role.value;
+                        option.textContent = role.text;
+                        userRole.appendChild(option);
+                    });
+                } /*else if (selectedCategory === 'owner') {
+                    userRoleContainer.style.display = 'block';
+                    ownerRoles.forEach(role => {
+                        const option = document.createElement('option');
+                        option.value = role.value;
+                        option.textContent = role.text;
+                        userRole.appendChild(option);
+                    });
+                } */else {
+                    userRoleContainer.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

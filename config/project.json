@@ -1,0 +1,55 @@
+{
+  "project": {
+    "name": "ToDo List Management System",
+    "version": "1.0.0",
+    "description": "A comprehensive task management solution for teams and individuals",
+    "author": "Development Team",
+    "license": "MIT"
+  },
+  "structure": {
+    "src/": "Source code directory",
+    "src/assets/": "Static assets (CSS, JS, Images)",
+    "src/assets/css/": "Stylesheets",
+    "src/assets/js/": "JavaScript files",
+    "src/assets/images/": "Image assets",
+    "src/pages/": "HTML pages organized by role",
+    "src/pages/auth/": "Authentication pages",
+    "src/pages/employee/": "Employee dashboard pages",
+    "src/pages/manager/": "Manager dashboard pages",
+    "src/pages/admin/": "Admin dashboard pages",
+    "src/components/": "Reusable components",
+    "config/": "Configuration files",
+    "docs/": "Documentation"
+  },
+  "pages": {
+    "entry_point": "index.html",
+    "authentication": "src/pages/auth/auth.html",
+    "employee_dashboard": "src/pages/employee/index.html",
+    "manager_dashboard": "src/pages/manager/manager.html",
+    "admin_panel": "src/pages/admin/admin.html"
+  },
+  "assets": {
+    "main_stylesheet": "src/assets/css/styles.css",
+    "scripts": {
+      "employee": "src/assets/js/employee.js",
+      "manager": "src/assets/js/manager.js",
+      "admin": "src/assets/js/admin.js",
+      "auth": "src/assets/js/auth.js",
+      "celebration": "src/assets/js/celebration.js"
+    }
+  },
+  "external_dependencies": {
+    "bootstrap": "5.3.0",
+    "font_awesome": "6.0.0",
+    "google_fonts": "Poppins",
+    "canvas_confetti": "1.5.1"
+  },
+  "features": {
+    "user_roles": ["Employee", "Manager", "Admin"],
+    "task_management": true,
+    "user_authentication": true,
+    "team_collaboration": true,
+    "reporting": true,
+    "data_export": true
+  }
+}
