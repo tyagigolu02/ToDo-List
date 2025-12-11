@@ -82,8 +82,11 @@
 }
 
 .auth-form .form-control:focus {
-    border-color: var(--primary-color, #667eea);
-    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    /* border-color: var(--primary-color, #667eea); */
+    /* box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25); */
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
     background: rgba(255, 255, 255, 0.2);
 }
 

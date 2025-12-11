@@ -12,6 +12,12 @@ function triggerCelebration() {
 document.addEventListener('DOMContentLoaded', function() {
     // Check if user is logged in and is an employee
     const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
+    
+    // Set min date for date inputs to today
+    const todayDate = new Date().toISOString().split('T')[0];
+    const dateInputs = document.querySelectorAll('input[type="date"]');
+    dateInputs.forEach(input => input.min = todayDate);
+
     // TEMPORARILY COMMENTED OUT FOR DEVELOPMENT
     // if (!loggedInUser || loggedInUser.role !== 'employee') {
     //     window.location.href = "../auth/auth.html";
@@ -57,6 +63,26 @@ document.addEventListener('DOMContentLoaded', function() {
     const filterBtns = document.querySelectorAll('.filter-btn');
     let currentFilter = 'all';
     
+    // Search and Sort elements
+    const searchInput = document.getElementById('searchInput');
+    const sortSelect = document.getElementById('sortSelect');
+    let currentSearchTerm = '';
+    let currentSort = 'date-asc';
+
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            currentSearchTerm = e.target.value.toLowerCase();
+            updateUI();
+        });
+    }
+
+    if (sortSelect) {
+        sortSelect.addEventListener('change', (e) => {
+            currentSort = e.target.value;
+            updateUI();
+        });
+    }
+    
     let allTasks = JSON.parse(localStorage.getItem('tasks')) || [];
     let tasks = allTasks.filter(t => t.userId === loggedInUserId);
     
@@ -95,6 +121,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function addTask(text, priority = 'medium', dueDate = '') {
+        const today = new Date().toISOString().split('T')[0];
+        if (dueDate && dueDate < today) {
+            showNotification("Cannot set due date in the past", "error");
+            return;
+        }
+
         const task = {
             id: Date.now(),
             userId: loggedInUserId,
@@ -137,9 +169,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function deleteTask(id) {
-        tasks = tasks.filter(t => t.id !== id);
-        saveTasks();
-        updateUI();
+        const task = tasks.find(t => t.id === id);
+        if (task) {
+            currentTaskToDeleteId = id;
+            document.getElementById('deleteTaskTitlePreview').textContent = `"${task.text}"`;
+            const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+            modal.show();
+        }
     }
     
     function renderTasks() {
@@ -162,8 +198,41 @@ document.addEventListener('DOMContentLoaded', function() {
                 );
                 break;
         }
+
+        // Filter by search term
+        if (currentSearchTerm) {
+            filteredTasks = filteredTasks.filter(task => 
+                task.text.toLowerCase().includes(currentSearchTerm) || 
+                (task.description && task.description.toLowerCase().includes(currentSearchTerm))
+            );
+        }
+
+        // Sort tasks
+        filteredTasks.sort((a, b) => {
+            switch (currentSort) {
+                case 'date-asc':
+                    return (a.dueDate || '9999-99-99').localeCompare(b.dueDate || '9999-99-99');
+                case 'date-desc':
+                    return (b.dueDate || '').localeCompare(a.dueDate || '');
+                case 'priority-desc':
+                    const pMap = { high: 3, medium: 2, low: 1 };
+                    return pMap[b.priority] - pMap[a.priority];
+                case 'priority-asc':
+                    const pMap2 = { high: 3, medium: 2, low: 1 };
+                    return pMap2[a.priority] - pMap2[b.priority];
+                case 'alpha-asc':
+                    return a.text.localeCompare(b.text);
+                default:
+                    return 0;
+            }
+        });
         
         tasksList.innerHTML = '';
+        
+        if (filteredTasks.length === 0) {
+            tasksList.innerHTML = '<div class="text-center text-muted py-4">No tasks found matching your criteria</div>';
+            return;
+        }
         
         filteredTasks.forEach(task => {
             const isOverdue = !task.completed && task.dueDate && task.dueDate < today;
@@ -193,7 +262,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     ` : ''}
                 </div>
                 <div class="task-actions">
-                    <button class="btn btn-sm btn-outline-danger" onclick="deleteTask(${task.id})">
+                    <button class="btn btn-sm btn-outline-primary me-1" onclick="editTask(${task.id})" aria-label="Edit Task">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" onclick="deleteTask(${task.id})" aria-label="Delete Task">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
@@ -360,10 +432,73 @@ document.addEventListener('DOMContentLoaded', function() {
             currentTaskToComplete = null;
         }
     });
+
+    // Edit Task Logic
+    function editTask(id) {
+        const task = tasks.find(t => t.id === id);
+        if (task) {
+            document.getElementById('editTaskId').value = task.id;
+            document.getElementById('editTaskText').value = task.text;
+            document.getElementById('editTaskPriority').value = task.priority;
+            document.getElementById('editTaskDueDate').value = task.dueDate || '';
+            
+            const modal = new bootstrap.Modal(document.getElementById('editTaskModal'));
+            modal.show();
+        }
+    }
+
+    document.getElementById('saveTaskChanges').addEventListener('click', function() {
+        const id = parseInt(document.getElementById('editTaskId').value);
+        const text = document.getElementById('editTaskText').value.trim();
+        const priority = document.getElementById('editTaskPriority').value;
+        const dueDate = document.getElementById('editTaskDueDate').value;
+
+        if (!text) {
+            showNotification("Task description cannot be empty", "error");
+            return;
+        }
+
+        const today = new Date().toISOString().split('T')[0];
+        if (dueDate && dueDate < today) {
+            showNotification("Cannot set due date in the past", "error");
+            return;
+        }
+
+        const taskIndex = tasks.findIndex(t => t.id === id);
+        if (taskIndex !== -1) {
+            tasks[taskIndex].text = text;
+            tasks[taskIndex].priority = priority;
+            tasks[taskIndex].dueDate = dueDate;
+            
+            saveTasks();
+            updateUI();
+            
+            const modal = bootstrap.Modal.getInstance(document.getElementById('editTaskModal'));
+            modal.hide();
+            showNotification("Task updated successfully!");
+        }
+    });
+
+    // Delete Confirmation Logic
+    let currentTaskToDeleteId = null;
+    
+    document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+        if (currentTaskToDeleteId) {
+            tasks = tasks.filter(t => t.id !== currentTaskToDeleteId);
+            saveTasks();
+            updateUI();
+            
+            const modal = bootstrap.Modal.getInstance(document.getElementById('deleteConfirmModal'));
+            modal.hide();
+            showNotification("Task deleted successfully!");
+            currentTaskToDeleteId = null;
+        }
+    });
     
     // Make functions global so they can be called from HTML
     window.toggleTask = toggleTask;
     window.deleteTask = deleteTask;
+    window.editTask = editTask;
     window.uploadFile = uploadFile;
     window.addDescription = addDescription;
     
